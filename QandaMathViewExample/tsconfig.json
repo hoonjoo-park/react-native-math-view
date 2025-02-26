@@ -1,0 +1,13 @@
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "preserveSymlinks": true,
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "baseUrl": "./src",
+    "paths": {
+      "/*": ["*"],
+      "@mathpresso/qanda-math-view": ["../../src"]
+    }
+  }
+}
