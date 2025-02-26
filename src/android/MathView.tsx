@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-import React from 'react';
-import { MathViewInjectedProps, MathViewProps } from '../common';
-import { ErrorComponent } from '../Error';
-import { mathViewRender } from '../hooks';
-import MathBaseView from './MathBaseView';
+import React from "react";
+import { ErrorComponent } from "../Error";
+import { MathViewInjectedProps, MathViewProps } from "../common";
+import { mathViewRender } from "../hooks";
+import MathBaseView from "./MathBaseView";
 
 /**
  * uses async rendering for better performance in combination with memoization
@@ -12,24 +12,21 @@ import MathBaseView from './MathBaseView';
  * @param props
  * @param ref
  */
-const MathView = mathViewRender((props: MathViewInjectedProps, ref: any) => {
-    return (
-        <MathBaseView
-            {...props}
-            ref={ref}
-        />
-    );
-}, { async: true });
+const MathView = mathViewRender(
+  (props: MathViewInjectedProps, ref: any) => {
+    return <MathBaseView {...props} ref={ref} />;
+  },
+  { async: true }
+);
 
 MathBaseView.defaultProps = {
-    resizeMode: 'contain',
-    config: {}
+  resizeMode: "contain",
+  config: {},
 } as Partial<MathViewInjectedProps>;
 
 MathView.defaultProps = {
-    ...MathBaseView.defaultProps,
-    renderError: ErrorComponent
+  ...MathBaseView.defaultProps,
+  renderError: ErrorComponent,
 } as Partial<MathViewProps>;
 
 export default MathView;
-

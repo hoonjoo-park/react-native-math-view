@@ -1,5 +1,4 @@
-
-export { default } from './MathView';
-export * from './MathView';
-export { default as MathBaseView } from './MathBaseView';
-export * from './MathBaseView';
+export * from "./MathBaseView";
+export { default as MathBaseView } from "./MathBaseView";
+export * from "./MathView";
+export { default } from "./MathView";

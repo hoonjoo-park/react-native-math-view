@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { LiteElement } from "mathjax-full/js/adaptors/lite/Element";
-import * as matrixUtil from 'transformation-matrix';
-import * as TreeWalker from './TreeWalker';
+import * as matrixUtil from "transformation-matrix";
+import * as TreeWalker from "./TreeWalker";
 
 export const compose = matrixUtil.transform;
 
@@ -10,7 +10,7 @@ export const compose = matrixUtil.transform;
  * @param svg
  */
 export function parseSVG(svg: string) {
-    return _.replace(svg, /xlink:xlink/g, 'xlink');
+  return _.replace(svg, /xlink:xlink/g, "xlink");
 }
 
 /**
@@ -19,11 +19,30 @@ export function parseSVG(svg: string) {
  * @param node
  */
 export function extractDataFromMathjaxId(node: LiteElement) {
-    const xlinkHref = _.get(node.attributes, 'xlink:xlink:href', _.get(node.attributes, 'xlink:href', _.get(node.attributes, 'href', _.get(node.attributes, 'id'))));
-    const splitId = _.split(xlinkHref, '-');
-    const charCode = parseInt(_.last(splitId) as string, 16);
-    const char = String.fromCharCode(charCode);
-    return _.zipObject(['ns', 'localCahceId', 'input', 'variant', 'charCode16', 'charCode', 'char'], _.concat(splitId, charCode, char));
+  const xlinkHref = _.get(
+    node.attributes,
+    "xlink:xlink:href",
+    _.get(
+      node.attributes,
+      "xlink:href",
+      _.get(node.attributes, "href", _.get(node.attributes, "id"))
+    )
+  );
+  const splitId = _.split(xlinkHref, "-");
+  const charCode = parseInt(_.last(splitId) as string, 16);
+  const char = String.fromCharCode(charCode);
+  return _.zipObject(
+    [
+      "ns",
+      "localCahceId",
+      "input",
+      "variant",
+      "charCode16",
+      "charCode",
+      "char",
+    ],
+    _.concat(splitId, charCode, char)
+  );
 }
 
 /**
@@ -31,27 +50,37 @@ export function extractDataFromMathjaxId(node: LiteElement) {
  * @param node
  * @param attributeKey the key of the transform attribute to extract
  */
-export function transformationToMatrix(node: LiteElement, attributeKey = 'transform') {
-    const transformAttr = _.get(node.attributes, attributeKey, null);
-    const xAttr = _.get(node.attributes, 'x', 0);
-    const yAttr = _.get(node.attributes, 'y', 0);
+export function transformationToMatrix(
+  node: LiteElement,
+  attributeKey = "transform"
+) {
+  const transformAttr = _.get(node.attributes, attributeKey, null);
+  const xAttr = _.get(node.attributes, "x", 0);
+  const yAttr = _.get(node.attributes, "y", 0);
 
-    if (!transformAttr) return compose(matrixUtil.translate(0));
+  if (!transformAttr) return compose(matrixUtil.translate(0));
 
-    const matrices = _.map(matrixUtil.fromTransformAttribute(transformAttr) as matrixUtil.MatrixDescriptor[], (mat) => {
-        switch (mat.type) {
-            case 'matrix':
-                return mat;
-            case 'translate':
-                return compose(matrixUtil.translate(mat.tx, mat.ty || 0));
-            case 'scale':
-                return compose(matrixUtil.scale(mat.sx || 1, mat.sy || mat.sx || 1));
-            default:
-                throw new Error(`Mathjax transformation accumulator unhandled command ${mat.type}`);
-        }
-    });
+  const matrices = _.map(
+    matrixUtil.fromTransformAttribute(
+      transformAttr
+    ) as matrixUtil.MatrixDescriptor[],
+    (mat) => {
+      switch (mat.type) {
+        case "matrix":
+          return mat;
+        case "translate":
+          return compose(matrixUtil.translate(mat.tx, mat.ty || 0));
+        case "scale":
+          return compose(matrixUtil.scale(mat.sx || 1, mat.sy || mat.sx || 1));
+        default:
+          throw new Error(
+            `Mathjax transformation accumulator unhandled command ${mat.type}`
+          );
+      }
+    }
+  );
 
-    return compose(matrixUtil.translate(xAttr, yAttr), ...matrices);
+  return compose(matrixUtil.translate(xAttr, yAttr), ...matrices);
 }
 
 /**
@@ -60,16 +89,19 @@ export function transformationToMatrix(node: LiteElement, attributeKey = 'transf
  * @param node
  */
 export function accTransformations(node: LiteElement) {
-    const matrices = TreeWalker.walkUp<matrixUtil.Matrix>(node, (n, level, acc) => {
-        return transformationToMatrix(n);
-    });
+  const matrices = TreeWalker.walkUp<matrixUtil.Matrix>(
+    node,
+    (n, level, acc) => {
+      return transformationToMatrix(n);
+    }
+  );
 
-    return compose(..._.reverse(matrices));
+  return compose(..._.reverse(matrices));
 }
 
 export class Memoize {
-    cache: any[] = [];
-    clearCache() {
-        this.cache = [];
-    }
+  cache: any[] = [];
+  clearCache() {
+    this.cache = [];
+  }
 }

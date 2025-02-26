@@ -22,11 +22,11 @@
     "rn",
     "latex"
   ],
-  "author": "ShaMan123 (https://github.com/ShaMan123)",
+  "author": "hoonjoo-park (https://github.com/hoonjoo-park)",
   "license": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ShaMan123/react-native-math-view.git"
+    "url": "https://github.com/hoonjoo-park/react-native-math-view.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
@@ -36,26 +36,25 @@
     "lodash": "^4.17.21",
     "mathjax": "^3.2.1",
     "mathjax-full": "^3.1.4",
-    "react": "*",
-    "react-native": "*",
+    "react": "18.3.1",
+    "react-native": "0.77.1",
     "transformation-matrix": "^2.11.1"
   },
   "peerDependencies": {
-    "react-native": "*",
-    "react-native-svg": "*"
+    "react-native": ">=0.76.0",
+    "react-native-svg": ">=15.11.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.169",
-    "@types/react": "^17.0.6",
-    "@types/react-native": "^0.64.5",
+    "@types/react": "^18.3.1",
     "fs-extra": "^10.0.0",
     "path": "^0.12.7",
     "semver": "^7.3.5",
-    "typescript": "^4.2.4",
+    "typescript": "5.0.4",
     "yargs": "^17.0.1"
   },
   "resolutions": {
-    "react": "*",
-    "react-native": "*"
+    "react": "18.3.1",
+    "react-native": "0.77.1"
   }
 }
